@@ -4,12 +4,61 @@ import Header from "./components/layout/Header";
 import ApiConfig from "./components/weather/ApiConfig";
 import { useState } from "react";
 import SearchBar from "./components/weather/SearchBar";
+import SearchResults from "./components/weather/SearchResults";
+import { City } from "./types/weather";
+
 const App: React.FC = () => {
   const [apiToken, setApiToken] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
+  const [searchResults, setSearchResults] = useState<City[]>([
+    {
+      name: "Paris",
+      country: "FR",
+      region: "Île-de-France",
+      coordinates: {
+        lat: 48.8566,
+        lon: 2.3522,
+      },
+    },
+    {
+      name: "Lyon",
+      country: "FR",
+      region: "Auvergne-Rhône-Alpes",
+      coordinates: {
+        lat: 45.7578,
+        lon: 4.832,
+      },
+    },
+  ]);
+  const [selectedCity, setSelectedCity] = useState<City | null>(null);
 
   const searchCities = (query: string) => {
     setSearchQuery(query);
+    // Simulation de recherche
+    setSearchResults([
+      {
+        name: "Paris",
+        country: "FR",
+        region: "Île-de-France",
+        coordinates: {
+          lat: 48.8566,
+          lon: 2.3522,
+        },
+      },
+      {
+        name: "Lyon",
+        country: "FR",
+        region: "Auvergne-Rhône-Alpes",
+        coordinates: {
+          lat: 45.7578,
+          lon: 4.832,
+        },
+      },
+    ]);
+  };
+
+  const selectCity = (city: City) => {
+    setSelectedCity(city);
   };
 
   return (
@@ -21,6 +70,7 @@ const App: React.FC = () => {
           <div className="card-body p-6">
             <ApiConfig apiToken={apiToken} onApiTokenChange={setApiToken} />
             <SearchBar onSearch={searchCities} />
+            <SearchResults results={searchResults} onCitySelect={selectCity} />
           </div>
         </div>
 
