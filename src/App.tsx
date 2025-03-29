@@ -1,11 +1,11 @@
-// src/App.tsx
+import { useState } from "react";
 import Footer from "./components/layout/Footer";
 import Header from "./components/layout/Header";
 import ApiConfig from "./components/weather/ApiConfig";
-import { useState } from "react";
 import SearchBar from "./components/weather/SearchBar";
 import SearchResults from "./components/weather/SearchResults";
-import { City } from "./types/weather";
+import WeatherCard from "./components/weather/WeatherCard";
+import { City, WeatherData } from "./types/weather";
 
 const App: React.FC = () => {
   const [apiToken, setApiToken] = useState("");
@@ -31,10 +31,27 @@ const App: React.FC = () => {
     },
   ]);
   const [selectedCity, setSelectedCity] = useState<City | null>(null);
+  const [weatherData, setWeatherData] = useState<WeatherData>({
+    city: {
+      name: "Paris",
+      country: "FR",
+      region: "Île-de-France",
+      coordinates: {
+        lat: 48.8566,
+        lon: 2.3522,
+      },
+    },
+    temperature: 22,
+    condition: "Ensoleillé",
+    windSpeed: 12,
+    humidity: 65,
+    pressure: 1015,
+    lastUpdated: new Date().toLocaleString(),
+    icon: "☀️",
+  });
 
   const searchCities = (query: string) => {
     setSearchQuery(query);
-    // Simulation de recherche
     setSearchResults([
       {
         name: "Paris",
@@ -59,6 +76,11 @@ const App: React.FC = () => {
 
   const selectCity = (city: City) => {
     setSelectedCity(city);
+    setWeatherData({
+      ...weatherData,
+      city: city,
+      lastUpdated: new Date().toLocaleString(),
+    });
   };
 
   return (
@@ -71,6 +93,7 @@ const App: React.FC = () => {
             <ApiConfig apiToken={apiToken} onApiTokenChange={setApiToken} />
             <SearchBar onSearch={searchCities} />
             <SearchResults results={searchResults} onCitySelect={selectCity} />
+            <WeatherCard data={weatherData} />
           </div>
         </div>
 

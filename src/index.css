@@ -2,3 +2,18 @@
 @plugin "daisyui" {
   themes: light --default, dark --prefersdark, winter;
 }
+
+.weather-gradient {
+  background: linear-gradient(120deg, #89f7fe 0%, #66a6ff 100%);
+}
+.weather-card {
+  backdrop-filter: blur(10px);
+  background-color: rgba(255, 255, 255, 0.7);
+}
+.city-chip {
+  transition: all 0.3s ease;
+}
+.city-chip:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
