@@ -2,6 +2,7 @@ import { useState } from "react";
 import Footer from "./components/layout/Footer";
 import Header from "./components/layout/Header";
 import ApiConfig from "./components/weather/ApiConfig";
+import ForecastCards from "./components/weather/ForecastCards";
 import SearchBar from "./components/weather/SearchBar";
 import SearchResults from "./components/weather/SearchResults";
 import WeatherCard from "./components/weather/WeatherCard";
@@ -83,6 +84,24 @@ const App: React.FC = () => {
     });
   };
 
+  const forecast = [
+    {
+      day: "Lundi",
+      temperature: 22,
+      icon: "☀️",
+    },
+    {
+      day: "Mardi",
+      temperature: 20,
+      icon: "⛅",
+    },
+    {
+      day: "test",
+      temperature: 18,
+      icon: "☁️",
+    },
+  ];
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-100 to-indigo-200">
       <div className="container mx-auto px-4 py-8 max-w-4xl">
@@ -94,6 +113,7 @@ const App: React.FC = () => {
             <SearchBar onSearch={searchCities} />
             <SearchResults results={searchResults} onCitySelect={selectCity} />
             <WeatherCard data={weatherData} />
+            <ForecastCards forecast={forecast} />
           </div>
         </div>
 
