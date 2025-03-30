@@ -1,9 +1,45 @@
 import { WeatherData } from "../../types/weather";
-import { MapPin, Wind, Droplets, Gauge, Sun } from "lucide-react";
+import {
+  MapPin,
+  Wind,
+  Droplets,
+  Gauge,
+  Sun,
+  Cloud,
+  CloudRain,
+  CloudSun,
+} from "lucide-react";
 
 interface WeatherCardProps {
   data: WeatherData | null;
 }
+
+const getWeatherIcon = (icon: string) => {
+  const iconProps = {
+    size: 48,
+    className: "text-yellow-400 mr-3",
+  };
+
+  // OpenWeatherMap icon codes
+  switch (icon) {
+    case "01d":
+    case "01n":
+      return <Sun {...iconProps} />;
+    case "02d":
+    case "02n":
+      return <CloudSun {...iconProps} />;
+    case "03d":
+    case "03n":
+    case "04d":
+    case "04n":
+      return <Cloud {...iconProps} />;
+    case "10d":
+    case "10n":
+      return <CloudRain {...iconProps} />;
+    default:
+      return <Sun {...iconProps} />;
+  }
+};
 
 const WeatherCard: React.FC<WeatherCardProps> = ({ data }) => {
   if (!data) {
@@ -35,10 +71,10 @@ const WeatherCard: React.FC<WeatherCardProps> = ({ data }) => {
 
           <div className="flex flex-col items-center">
             <div className="text-6xl font-bold text-primary flex items-center">
-              <Sun className="text-yellow-400 mr-3" size={48} />
+              {getWeatherIcon(data.icon)}
               {data.temperature}°C
             </div>
-            <div className="text-lg mt-2">{data.condition}</div>
+            <div className="text-lg mt-2 capitalize">{data.condition}</div>
             <div className="flex gap-4 mt-4">
               <div className="flex flex-col items-center">
                 <Wind className="text-blue-400 mb-1" size={20} />

@@ -17,7 +17,7 @@ const ForecastCards: React.FC<ForecastCardsProps> = ({ forecast }) => {
           key={index}
           className="card bg-base-100 shadow p-3 flex flex-col items-center"
         >
-          <div className="text-sm font-medium">{day.day}</div>
+          <div className="text-sm font-medium capitalize">{day.day}</div>
           {getWeatherIcon(day.icon)}
           <div className="font-bold">{day.temperature}°C</div>
         </div>
@@ -32,16 +32,24 @@ function getWeatherIcon(icon: string) {
     className: `my-2 ${getIconColorClass(icon)}`,
   };
 
+  // OpenWeatherMap icon codes
   switch (icon) {
-    case "☀️":
+    case "01d":
+    case "01n":
       return <Sun {...iconProps} />;
-    case "⛅":
+    case "02d":
+    case "02n":
       return <CloudSun {...iconProps} />;
-    case "☁️":
+    case "03d":
+    case "03n":
+    case "04d":
+    case "04n":
       return <Cloud {...iconProps} />;
-    case "🌧️":
+    case "10d":
+    case "10n":
       return <CloudRain {...iconProps} />;
-    case "⛈️":
+    case "09d":
+    case "09n":
       return <CloudDrizzle {...iconProps} />;
     default:
       return <Sun {...iconProps} />;
@@ -49,16 +57,24 @@ function getWeatherIcon(icon: string) {
 }
 
 function getIconColorClass(icon: string): string {
+  // OpenWeatherMap icon codes
   switch (icon) {
-    case "☀️":
+    case "01d":
+    case "01n":
       return "text-yellow-400";
-    case "⛅":
+    case "02d":
+    case "02n":
       return "text-blue-400";
-    case "☁️":
+    case "03d":
+    case "03n":
+    case "04d":
+    case "04n":
       return "text-gray-400";
-    case "🌧️":
+    case "10d":
+    case "10n":
       return "text-indigo-400";
-    case "⛈️":
+    case "09d":
+    case "09n":
       return "text-indigo-600";
     default:
       return "text-blue-400";
