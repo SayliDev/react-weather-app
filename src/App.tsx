@@ -1,3 +1,4 @@
+import { AlertCircle } from "lucide-react";
 import Footer from "./components/layout/Footer";
 import Header from "./components/layout/Header";
 import ApiConfig from "./components/weather/ApiConfig";
@@ -23,7 +24,7 @@ const App: React.FC = () => {
   } = useWeather(apiKey);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-100 to-indigo-200">
+    <div className="min-h-screen bg-gradient-to-br from-[rgba(255,241,198,0.41)] to-[rgb(188,210,219)]">
       <div className="container mx-auto px-4 py-8 max-w-4xl">
         <Header />
 
@@ -46,7 +47,7 @@ const App: React.FC = () => {
 
             {error && (
               <div className="alert alert-error my-4">
-                <i className="fas fa-exclamation-circle mr-2"></i>
+                <AlertCircle className="mr-2 text-red-600" />
                 {error}
               </div>
             )}

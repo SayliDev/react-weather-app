@@ -26,7 +26,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSearch }) => {
         <input
           type="text"
           placeholder="Rechercher une ville..."
-          className="input input-bordered w-full pr-16 input-lg shadow-sm"
+          className="input input-bordered input-primary w-full pr-16 input-lg shadow-sm"
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
           onKeyPress={handleKeyPress}
