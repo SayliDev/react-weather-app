@@ -1,5 +1,5 @@
 import { City } from "../../types/weather";
-import { Globe, List, Thermometer, MapPin } from "lucide-react";
+import { Globe, List, Thermometer, MapPin, SearchX } from "lucide-react";
 
 interface SearchResultsProps {
   results: City[];
@@ -11,7 +11,15 @@ const SearchResults: React.FC<SearchResultsProps> = ({
   onCitySelect,
 }) => {
   if (results.length === 0) {
-    return null;
+    return (
+      <div className="flex flex-col items-center justify-center py-8 text-gray-500">
+        <SearchX className="w-12 h-12 mb-4" />
+        <p className="text-lg font-medium">Aucun résultat trouvé</p>
+        <p className="text-sm mt-2">
+          Veuillez vérifier la saisie ou essayer une autre ville.
+        </p>
+      </div>
+    );
   }
 
   return (

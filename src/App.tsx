@@ -7,6 +7,7 @@ import SearchResults from "./components/weather/SearchResults";
 import WeatherCard from "./components/weather/WeatherCard";
 import { useApiKey } from "./hooks/useApiKey";
 import { useWeather } from "./hooks/useWeather";
+import { motion, AnimatePresence } from "framer-motion";
 
 const App: React.FC = () => {
   const { apiKey, setApiKey } = useApiKey();
@@ -27,11 +28,21 @@ const App: React.FC = () => {
         <Header />
 
         <div className="card bg-base-100 shadow-2xl overflow-hidden">
-          <div className="card-body p-6">
+          <div className="card-body p-6 relative">
             <ApiConfig apiToken={apiKey} onApiTokenChange={setApiKey} />
             <SearchBar onSearch={searchCities} />
 
-            {isLoading && <div className="text-center py-4">Chargement...</div>}
+            <AnimatePresence>
+              {isLoading && (
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.3 }}
+                  className="absolute inset-0 bg-white/50 backdrop-blur-sm flex justify-center items-center z-10"
+                ></motion.div>
+              )}
+            </AnimatePresence>
 
             {error && (
               <div className="alert alert-error my-4">
