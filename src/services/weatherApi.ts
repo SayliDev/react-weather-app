@@ -42,7 +42,7 @@ export class OpenWeatherMapService implements WeatherApiService {
 
   async searchCities(query: string): Promise<City[]> {
     const response = await fetch(
-      `${this.baseUrl}/weather?q=${query}&appid=${this.apiKey}`
+      `${this.baseUrl}/weather?q=${query}&appid=${this.apiKey}&lang=fr`
     );
     const data = await response.json();
 
@@ -73,10 +73,10 @@ export class OpenWeatherMapService implements WeatherApiService {
 
   async getCurrentWeather(city: City): Promise<WeatherData> {
     const response = await fetch(
-      `${this.baseUrl}/weather?q=${city.name}&appid=${this.apiKey}`
+      `${this.baseUrl}/weather?q=${city.name}&appid=${this.apiKey}&lang=fr`
     );
     const data = await response.json();
-    console.log(data);
+    // console.log(data);
 
     // Info via reverse geocoding
     const reverseResponse = await fetch(
@@ -108,9 +108,10 @@ export class OpenWeatherMapService implements WeatherApiService {
 
   async getForecast(city: City): Promise<ForecastDay[]> {
     const response = await fetch(
-      `${this.baseUrl}/forecast?q=${city.name}&appid=${this.apiKey}`
+      `${this.baseUrl}/forecast?q=${city.name}&appid=${this.apiKey}&lang=fr`
     );
     const data = await response.json();
+    console.log("data", data);
 
     // prévision par jour toutes les 8 heures
     const dailyForecasts = data.list.filter(
