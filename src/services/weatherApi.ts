@@ -24,6 +24,18 @@ export class OpenWeatherMapService implements WeatherApiService {
     this.apiKey = apiKey;
   }
 
+  async validateApiKey(): Promise<boolean> {
+    try {
+      const response = await fetch(
+        `${this.baseUrl}/weather?q=London&appid=${this.apiKey}`
+      );
+      const data = await response.json();
+      return data.cod !== 401;
+    } catch {
+      return false;
+    }
+  }
+
   setApiKey(apiKey: string) {
     this.apiKey = apiKey;
   }
@@ -85,8 +97,7 @@ export class OpenWeatherMapService implements WeatherApiService {
     const data = await response.json();
 
     const dailyForecasts = data.list.filter(
-      (_: OpenWeatherForecastItem, index: number) => index % 8 === 0
-      // Prendre une prévision par jour toutes les 8 heures
+      (_: OpenWeatherForecastItem, index: number) => index % 8 === 0 // prévision par jour toutes les 8 heures
     );
 
     return dailyForecasts.map((item: OpenWeatherForecastItem) => ({

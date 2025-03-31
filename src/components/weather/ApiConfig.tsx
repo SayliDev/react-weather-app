@@ -1,5 +1,13 @@
-import { Eye, EyeOff, Info, KeyRound } from "lucide-react";
-import { useState } from "react";
+import {
+  Eye,
+  EyeOff,
+  Info,
+  KeyRound,
+  CheckCircle2,
+  XCircle,
+} from "lucide-react";
+import { useState, useEffect } from "react";
+import { OpenWeatherMapService } from "../../services/weatherApi";
 
 interface ApiConfigProps {
   apiToken: string;
@@ -11,6 +19,23 @@ const ApiConfig: React.FC<ApiConfigProps> = ({
   onApiTokenChange,
 }) => {
   const [showToken, setShowToken] = useState(false);
+  const [isValid, setIsValid] = useState<boolean | null>(null);
+
+  useEffect(() => {
+    const validateKey = async () => {
+      if (!apiToken) {
+        setIsValid(null);
+        return;
+      }
+
+      const service = new OpenWeatherMapService(apiToken);
+      const valid = await service.validateApiKey();
+      setIsValid(valid);
+    };
+
+    const timeoutId = setTimeout(validateKey, 500);
+    return () => clearTimeout(timeoutId);
+  }, [apiToken]);
 
   return (
     <div className="collapse collapse-arrow border border-base-300 bg-base-100 rounded-box mb-6">
@@ -28,7 +53,13 @@ const ApiConfig: React.FC<ApiConfigProps> = ({
             <input
               type={showToken ? "text" : "password"}
               placeholder="Entrez votre token API"
-              className="input input-bordered w-full"
+              className={`input input-bordered w-full ${
+                isValid === true
+                  ? "input-success"
+                  : isValid === false
+                  ? "input-error"
+                  : ""
+              }`}
               value={apiToken}
               onChange={(e) => onApiTokenChange(e.target.value)}
             />
@@ -39,6 +70,25 @@ const ApiConfig: React.FC<ApiConfigProps> = ({
               {showToken ? <EyeOff size={20} /> : <Eye size={20} />}
             </button>
           </div>
+          {isValid !== null && (
+            <div
+              className={`text-sm mt-1 flex items-center gap-1 ${
+                isValid ? "text-success" : "text-error"
+              }`}
+            >
+              {isValid ? (
+                <>
+                  <CheckCircle2 size={16} />
+                  Clé API valide
+                </>
+              ) : (
+                <>
+                  <XCircle size={16} />
+                  Clé API invalide
+                </>
+              )}
+            </div>
+          )}
           <label className="label">
             <span className="label-text-alt text-info">
               <Info className="inline mr-1" size={16} />
