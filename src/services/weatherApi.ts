@@ -50,11 +50,19 @@ export class OpenWeatherMapService implements WeatherApiService {
       return [];
     }
 
+    // Info via reverse geocoding
+    const reverseResponse = await fetch(
+      `https://api.openweathermap.org/geo/1.0/reverse?lat=${data.coord.lat}&lon=${data.coord.lon}&limit=1&appid=${this.apiKey}`
+    );
+    const reverseData = await reverseResponse.json();
+    console.log(reverseData);
+    const region = reverseData[0]?.state || data.name;
+
     return [
       {
         name: data.name,
         country: data.sys.country,
-        region: data.name,
+        region: region,
         coordinates: {
           lat: data.coord.lat,
           lon: data.coord.lon,
@@ -68,13 +76,21 @@ export class OpenWeatherMapService implements WeatherApiService {
       `${this.baseUrl}/weather?q=${city.name}&appid=${this.apiKey}`
     );
     const data = await response.json();
+    console.log(data);
+
+    // Info via reverse geocoding
+    const reverseResponse = await fetch(
+      `https://api.openweathermap.org/geo/1.0/reverse?lat=${data.coord.lat}&lon=${data.coord.lon}&limit=1&appid=${this.apiKey}`
+    );
+    const reverseData = await reverseResponse.json();
+    const region = reverseData[0]?.state || data.name;
 
     // données de l'API en format WeatherData
     return {
       city: {
         name: data.name,
         country: data.sys.country,
-        region: data.name,
+        region: region,
         coordinates: {
           lat: data.coord.lat,
           lon: data.coord.lon,
@@ -96,8 +112,9 @@ export class OpenWeatherMapService implements WeatherApiService {
     );
     const data = await response.json();
 
+    // prévision par jour toutes les 8 heures
     const dailyForecasts = data.list.filter(
-      (_: OpenWeatherForecastItem, index: number) => index % 8 === 0 // prévision par jour toutes les 8 heures
+      (_: OpenWeatherForecastItem, index: number) => index % 8 === 0
     );
 
     return dailyForecasts.map((item: OpenWeatherForecastItem) => ({
