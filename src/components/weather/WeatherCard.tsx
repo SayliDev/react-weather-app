@@ -1,45 +1,14 @@
 import { WeatherData } from "../../types/weather";
+import { MapPin, Wind, Droplets, Gauge } from "lucide-react";
 import {
-  MapPin,
-  Wind,
-  Droplets,
-  Gauge,
-  Sun,
-  Cloud,
-  CloudRain,
-  CloudSun,
-} from "lucide-react";
+  getTemperatureGradient,
+  getTemperatureColor,
+  getWeatherIcon,
+} from "../../utils/weatherUtils.tsx";
 
 interface WeatherCardProps {
   data: WeatherData | null;
 }
-
-const getWeatherIcon = (icon: string) => {
-  const iconProps = {
-    size: 48,
-    className: "text-yellow-400 mr-3",
-  };
-
-  // OpenWeatherMap icon codes
-  switch (icon) {
-    case "01d":
-    case "01n":
-      return <Sun {...iconProps} />;
-    case "02d":
-    case "02n":
-      return <CloudSun {...iconProps} />;
-    case "03d":
-    case "03n":
-    case "04d":
-    case "04n":
-      return <Cloud {...iconProps} />;
-    case "10d":
-    case "10n":
-      return <CloudRain {...iconProps} />;
-    default:
-      return <Sun {...iconProps} />;
-  }
-};
 
 const WeatherCard: React.FC<WeatherCardProps> = ({ data }) => {
   if (!data) {
@@ -47,12 +16,17 @@ const WeatherCard: React.FC<WeatherCardProps> = ({ data }) => {
   }
 
   return (
-    <div className="rounded-box weather-gradient p-1">
+    <div
+      className={`rounded-box ${getTemperatureGradient(data.temperature)} p-1`}
+    >
       <div className="bg-base-100 bg-opacity-80 rounded-box p-6 weather-card">
         <div className="flex flex-col md:flex-row items-center justify-between gap-6">
           <div className="text-center md:text-left">
             <div className="flex items-center mb-2">
-              <MapPin className="text-primary mr-2" size={20} />
+              <MapPin
+                className={`${getTemperatureColor(data.temperature)} mr-2`}
+                size={20}
+              />
               <h2 className="text-2xl font-bold">
                 {data.city.name}, {data.city.country}
               </h2>
@@ -70,7 +44,11 @@ const WeatherCard: React.FC<WeatherCardProps> = ({ data }) => {
           </div>
 
           <div className="flex flex-col items-center">
-            <div className="text-6xl font-bold text-primary flex items-center">
+            <div
+              className={`text-6xl font-bold ${getTemperatureColor(
+                data.temperature
+              )} flex items-center`}
+            >
               {getWeatherIcon(data.icon)}
               {data.temperature}°C
             </div>
