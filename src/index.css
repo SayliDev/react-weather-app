@@ -3,9 +3,6 @@
   themes: light --default, dark --prefersdark, winter;
 }
 
-.weather-gradient {
-  background: linear-gradient(120deg, #89f7fe 0%, #66a6ff 100%);
-}
 .weather-card {
   backdrop-filter: blur(10px);
   background-color: rgba(255, 255, 255, 0.7);
