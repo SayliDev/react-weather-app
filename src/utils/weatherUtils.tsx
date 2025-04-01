@@ -1,4 +1,4 @@
-import { Sun, Cloud, CloudRain, CloudSun } from "lucide-react";
+import { Sun, Cloud, CloudRain, CloudSun, CloudDrizzle } from "lucide-react";
 
 export const getTemperatureGradient = (temperature: number) => {
   if (temperature <= 0) {
@@ -51,5 +51,58 @@ export const getWeatherIcon = (icon: string) => {
       return <CloudRain {...iconProps} />;
     default:
       return <Sun {...iconProps} />;
+  }
+};
+
+export const getForecastWeatherIcon = (icon: string) => {
+  const iconProps = {
+    size: 24,
+    className: `my-2 ${getForecastIconColorClass(icon)}`,
+  };
+
+  switch (icon) {
+    case "01d":
+    case "01n":
+      return <Sun {...iconProps} />;
+    case "02d":
+    case "02n":
+      return <CloudSun {...iconProps} />;
+    case "03d":
+    case "03n":
+    case "04d":
+    case "04n":
+      return <Cloud {...iconProps} />;
+    case "10d":
+    case "10n":
+      return <CloudRain {...iconProps} />;
+    case "09d":
+    case "09n":
+      return <CloudDrizzle {...iconProps} />;
+    default:
+      return <Sun {...iconProps} />;
+  }
+};
+
+export const getForecastIconColorClass = (icon: string): string => {
+  switch (icon) {
+    case "01d":
+    case "01n":
+      return "text-yellow-400";
+    case "02d":
+    case "02n":
+      return "text-blue-400";
+    case "03d":
+    case "03n":
+    case "04d":
+    case "04n":
+      return "text-gray-400";
+    case "10d":
+    case "10n":
+      return "text-indigo-400";
+    case "09d":
+    case "09n":
+      return "text-indigo-600";
+    default:
+      return "text-blue-400";
   }
 };
