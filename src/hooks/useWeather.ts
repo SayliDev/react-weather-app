@@ -1,11 +1,8 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { City, WeatherData, ForecastDay } from "../types/weather";
 import { OpenWeatherMapService } from "../services/weatherApi";
 
 export function useWeather(apiKey: string) {
-  const [weatherService, setWeatherService] = useState(
-    new OpenWeatherMapService(apiKey)
-  );
   const [searchResults, setSearchResults] = useState<City[]>([]);
   const [selectedCity, setSelectedCity] = useState<City | null>(null);
   const [currentWeather, setCurrentWeather] = useState<WeatherData | null>(
@@ -14,6 +11,11 @@ export function useWeather(apiKey: string) {
   const [forecast, setForecast] = useState<ForecastDay[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  const weatherService = useMemo(
+    () => new OpenWeatherMapService(apiKey),
+    [apiKey]
+  );
 
   useEffect(() => {
     weatherService.setApiKey(apiKey);
